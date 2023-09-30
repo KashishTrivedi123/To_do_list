@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6700b3, #f0b0ff); /* Light purple background color */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      width: 360px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4e085f;
+      margin-bottom: 30px;
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f7f7f7;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .completed-task {
+      text-decoration: line-through;
+      color: #888;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
+
+    #addBtn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #153677, #4e085f);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+    }
+
+    #addBtn:hover {
+      background: linear-gradient(135deg, #4e085f, #153677);
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    .edit-btn,
+    .delete-btn {
+      background: #fff;
+      color: #4e085f;
+      border: none;
+      cursor: pointer;
+      padding: 5px 8px;
+      margin-left: 5px;
+      border-radius: 3px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+    .edit-btn:hover,
+    .delete-btn:hover {
+      background: #4e085f;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>To-Do List <img src='C:\Users\kashish trivedi\Desktop\extra project\WAD\To_do_list\icon.png'></h1>
+    <input type="text" id="taskInput" placeholder="Add a new task...">
+    <button id="addBtn">Add Task</button>
+    <ul class="task-list" id="taskList">
+    </ul>
+  </div>
+
+  <script>
+    // JavaScript code (same as previous version)
+    const taskList = document.getElementById('taskList');
+    const taskInput = document.getElementById('taskInput');
+    const addBtn = document.getElementById('addBtn');
+
+    function addTask() {
+      const taskText = taskInput.value.trim();
+      if (taskText !== '') {
+        const taskItem = document.createElement('li');
+        taskItem.className = 'task';
+        taskItem.innerHTML = `
+          <span>
+            <input type="checkbox">
+            ${taskText}
+          </span>
+          <div class="buttons">
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+          </div>
+        `;
+        taskList.appendChild(taskItem);
+        taskInput.value = '';
+        taskInput.focus();
+        updateEventListeners();
+      }
+    }
+
+    function updateEventListeners() {
+      const tasks = document.querySelectorAll('.task');
+      tasks.forEach(task => {
+        const editBtn = task.querySelector('.edit-btn');
+        const deleteBtn = task.querySelector('.delete-btn');
+        const taskTextSpan = task.querySelector('span');
+
+        editBtn.addEventListener('click', () => {
+          const newText = prompt('Edit the task:', taskTextSpan.textContent);
+          if (newText !== null && newText.trim() !== '') {
+            taskTextSpan.textContent = newText.trim();
+          }
+        });
+
+        deleteBtn.addEventListener('click', () => {
+          taskList.removeChild(task);
+        });
+
+        task.addEventListener('click', () => {
+          taskTextSpan.classList.toggle('completed-task');
+        });
+      });
+    }
+
+    addBtn.addEventListener('click', addTask);
+
+    taskInput.addEventListener('keyup', event => {
+      if (event.key === 'Enter') {
+        addTask();
+      }
+    });
+
+    updateEventListeners();
+  </script>
+</body>
+
+</html>
